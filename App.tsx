@@ -5,6 +5,7 @@ import { TARGET_SEQUENCE, KEY_MAP } from './constants';
 import StartScreen from './components/StartScreen';
 import GameScreen from './components/GameScreen';
 import GameOverScreen from './components/GameOverScreen';
+import { soundManager } from './utils/SoundManager';
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.Idle);
@@ -15,6 +16,8 @@ const App: React.FC = () => {
   const [feedbackType, setFeedbackType] = useState<'correct' | 'incorrect' | null>(null);
 
   const resetGame = useCallback(() => {
+    soundManager.init();
+    soundManager.startBGM();
     setLives(4);
     setScore(0);
     setCurrentStep(0);
@@ -25,22 +28,26 @@ const App: React.FC = () => {
     if (gameState !== GameState.Playing) return;
 
     if (key === TARGET_SEQUENCE[currentStep]) {
+      soundManager.playCorrect();
       setFeedbackKey(key);
       setFeedbackType('correct');
       const nextStep = currentStep + 1;
       if (nextStep === TARGET_SEQUENCE.length) {
+        soundManager.playSequenceComplete();
         setScore(prev => prev + 10);
         setCurrentStep(0);
       } else {
         setCurrentStep(nextStep);
       }
     } else {
+      soundManager.playIncorrect();
       setFeedbackKey(key);
       setFeedbackType('incorrect');
       const newLives = lives - 1;
       setLives(newLives);
       setCurrentStep(0);
       if (newLives <= 0) {
+        soundManager.stopBGM();
         setGameState(GameState.GameOver);
       }
     }
