@@ -5,6 +5,7 @@ import { TARGET_SEQUENCE, KEY_MAP } from './constants';
 import StartScreen from './components/StartScreen';
 import GameScreen from './components/GameScreen';
 import GameOverScreen from './components/GameOverScreen';
+import NewBugs from './components/NewBugs';
 import { soundManager } from './utils/SoundManager';
 
 const App: React.FC = () => {
@@ -34,8 +35,17 @@ const App: React.FC = () => {
       const nextStep = currentStep + 1;
       if (nextStep === TARGET_SEQUENCE.length) {
         soundManager.playSequenceComplete();
-        setScore(prev => prev + 10);
+        
+        const newScore = score + 10;
+        setScore(newScore);
         setCurrentStep(0);
+
+        if (newScore >= 100) {
+          setTimeout(() => {
+            soundManager.playUnlock();
+            setGameState(GameState.NewBugs);
+          }, 200);
+        }
       } else {
         setCurrentStep(nextStep);
       }
@@ -56,10 +66,13 @@ const App: React.FC = () => {
       setFeedbackKey(null);
       setFeedbackType(null);
     }, 300);
-  }, [currentStep, lives, gameState]);
+  }, [currentStep, lives, gameState, score]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Disable keyboard input for game controls if we aren't playing
+      if (gameState !== GameState.Playing) return;
+      
       const key = event.key.toUpperCase();
       if (KEY_MAP.hasOwnProperty(key)) {
         handleUserInput(KEY_MAP[key as keyof typeof KEY_MAP]);
@@ -70,7 +83,7 @@ const App: React.FC = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleUserInput]);
+  }, [handleUserInput, gameState]);
 
   const renderContent = () => {
     switch (gameState) {
@@ -87,6 +100,8 @@ const App: React.FC = () => {
         );
       case GameState.GameOver:
         return <GameOverScreen score={score} onRestart={resetGame} />;
+      case GameState.NewBugs:
+        return <NewBugs onBack={() => setGameState(GameState.Playing)} />;
       case GameState.Idle:
       default:
         return <StartScreen onStart={resetGame} />;

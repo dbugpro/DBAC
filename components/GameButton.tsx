@@ -11,7 +11,8 @@ interface GameButtonProps {
 }
 
 const GameButton: React.FC<GameButtonProps> = ({ label, onClick, isCorrect, isIncorrect }) => {
-  const baseClasses = 'w-full h-24 md:h-32 rounded-2xl text-5xl font-bold text-white flex items-center justify-center transition-all duration-100 ease-in-out focus:outline-none';
+  // Reduced height on mobile from h-24 to h-20 to save space
+  const baseClasses = 'w-full h-20 md:h-32 rounded-2xl text-5xl font-bold text-white flex items-center justify-center transition-all duration-100 ease-in-out focus:outline-none';
   const colorClass = KEY_COLORS[label];
   const shadowClass = KEY_SHADOWS[label];
 
