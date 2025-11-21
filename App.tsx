@@ -101,7 +101,7 @@ const App: React.FC = () => {
       case GameState.GameOver:
         return <GameOverScreen score={score} onRestart={resetGame} />;
       case GameState.NewBugs:
-        return <NewBugs onBack={() => setGameState(GameState.Playing)} />;
+        return <NewBugs onBack={resetGame} />;
       case GameState.Idle:
       default:
         return <StartScreen onStart={resetGame} />;

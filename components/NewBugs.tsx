@@ -16,10 +16,10 @@ const NewBugs: React.FC<NewBugsProps> = ({ onBack }) => {
         New bugs are being hatched here for future updates.
       </p>
       
-      <div className="flex space-x-8 mb-12 text-6xl animate-bounce">
-        <span>🐛</span>
-        <span className="animation-delay-200">🐞</span>
-        <span className="animation-delay-400">🦗</span>
+      <div className="flex space-x-12 mb-12 text-6xl">
+        <span className="animate-bounce" style={{ animationDelay: '0ms' }}>🐛</span>
+        <span className="animate-bounce" style={{ animationDelay: '200ms' }}>🐞</span>
+        <span className="animate-bounce" style={{ animationDelay: '400ms' }}>🦗</span>
       </div>
 
       <button
