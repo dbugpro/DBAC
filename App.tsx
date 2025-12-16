@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { GameState, KeyType } from './types';
 import { TARGET_SEQUENCE, KEY_MAP } from './constants';
@@ -23,6 +22,11 @@ const App: React.FC = () => {
     setScore(0);
     setCurrentStep(0);
     setGameState(GameState.Playing);
+  }, []);
+
+  const handleManualNewBugs = useCallback(() => {
+    soundManager.playUnlock();
+    setGameState(GameState.NewBugs);
   }, []);
 
   const handleUserInput = useCallback((key: KeyType) => {
@@ -96,6 +100,7 @@ const App: React.FC = () => {
             onKeyPress={handleUserInput}
             feedbackKey={feedbackKey}
             feedbackType={feedbackType}
+            onEnterNewBugs={handleManualNewBugs}
           />
         );
       case GameState.GameOver:

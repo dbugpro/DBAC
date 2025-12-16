@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { KeyType } from '../types';
 import { TARGET_SEQUENCE } from '../constants';
@@ -12,6 +11,7 @@ interface GameScreenProps {
   onKeyPress: (key: KeyType) => void;
   feedbackKey: KeyType | null;
   feedbackType: 'correct' | 'incorrect' | null;
+  onEnterNewBugs: () => void;
 }
 
 const SequenceDisplay: React.FC<{ currentStep: number }> = ({ currentStep }) => (
@@ -38,6 +38,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
   onKeyPress,
   feedbackKey,
   feedbackType,
+  onEnterNewBugs,
 }) => {
   return (
     <div className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center py-2">
@@ -57,7 +58,8 @@ const GameScreen: React.FC<GameScreenProps> = ({
       </div>
       
       <div 
-        className="text-lg md:text-xl font-bold font-mono tracking-widest text-slate-600 py-3 px-6 mt-4 select-none"
+        onClick={onEnterNewBugs}
+        className="text-lg md:text-xl font-bold font-mono tracking-widest text-slate-600 py-3 px-6 mt-4 select-none cursor-pointer"
       >
         SCORE 100 TO ENTER
       </div>
