@@ -5,6 +5,10 @@ import StartScreen from './components/StartScreen';
 import GameScreen from './components/GameScreen';
 import GameOverScreen from './components/GameOverScreen';
 import NewBugs from './components/NewBugs';
+import NewBugA from './components/NewBugA';
+import NewBugB from './components/NewBugB';
+import NewBugC from './components/NewBugC';
+import NewBugD from './components/NewBugD';
 import { soundManager } from './utils/SoundManager';
 
 const App: React.FC = () => {
@@ -26,6 +30,10 @@ const App: React.FC = () => {
 
   const handleManualNewBugs = useCallback(() => {
     soundManager.playUnlock();
+    setGameState(GameState.NewBugs);
+  }, []);
+
+  const handleBackToNewBugs = useCallback(() => {
     setGameState(GameState.NewBugs);
   }, []);
 
@@ -106,7 +114,23 @@ const App: React.FC = () => {
       case GameState.GameOver:
         return <GameOverScreen score={score} onRestart={resetGame} />;
       case GameState.NewBugs:
-        return <NewBugs onBack={resetGame} />;
+        return (
+          <NewBugs 
+            onBack={resetGame} 
+            onOpenA={() => setGameState(GameState.NewBugA)}
+            onOpenB={() => setGameState(GameState.NewBugB)}
+            onOpenC={() => setGameState(GameState.NewBugC)}
+            onOpenD={() => setGameState(GameState.NewBugD)}
+          />
+        );
+      case GameState.NewBugA:
+        return <NewBugA onBack={handleBackToNewBugs} />;
+      case GameState.NewBugB:
+        return <NewBugB onBack={handleBackToNewBugs} />;
+      case GameState.NewBugC:
+        return <NewBugC onBack={handleBackToNewBugs} />;
+      case GameState.NewBugD:
+        return <NewBugD onBack={handleBackToNewBugs} />;
       case GameState.Idle:
       default:
         return <StartScreen onStart={resetGame} />;

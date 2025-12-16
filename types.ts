@@ -4,6 +4,10 @@ export enum GameState {
   Playing,
   GameOver,
   NewBugs,
+  NewBugA,
+  NewBugB,
+  NewBugC,
+  NewBugD,
 }
 
 export type KeyType = 'D' | 'B' | 'A' | 'C';
